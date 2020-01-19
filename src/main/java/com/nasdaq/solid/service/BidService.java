@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.nasdaq.solid.data.Auction;
 import com.nasdaq.solid.data.Bids;
+import com.nasdaq.solid.data.Item;
 import com.nasdaq.solid.repo.AuctionRepo;
 import com.nasdaq.solid.repo.BidsRepo;
+import com.nasdaq.solid.repo.ItemRepo;
 
 @Service
 public class BidService {
@@ -20,6 +22,9 @@ public class BidService {
 	
 	@Autowired
 	private AuctionRepo auctionRepo;
+	
+	@Autowired
+	private ItemRepo itemRepo;
 	
 	public Bids closeAuction(int auctionId) {
 		Bids bidWinner = getBidWinner(auctionId);
@@ -47,5 +52,15 @@ public class BidService {
 		}
 		
 		return maxBid;
+	}
+	
+	public Double getProfitOrLoss(int auctionId) {
+		Auction auction = auctionRepo.findById(auctionId).orElse(null);
+		if (auction == null) {
+			return null; 
+		}
+		Item item = itemRepo.findById(auction.getItemId()).orElse(null);
+		Double totalPrice = auction.getSoldPrice() + auction.getPartCharges() * 0.2;
+		return totalPrice - item.getPrice();
 	}
 }

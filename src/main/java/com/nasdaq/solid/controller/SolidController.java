@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -135,5 +136,10 @@ public class SolidController {
 	public ResponseEntity<Bids> closeAuction(@PathVariable int auctionId) {
 		
 		return new ResponseEntity<>(bidService.closeAuction(auctionId), HttpStatus.OK);
+	}
+	
+	@GetMapping("/profitLoss/{auctionId}")
+	public ResponseEntity<Double> profitLoss(@PathVariable int auctionId) {
+		return new ResponseEntity<>(bidService.getProfitOrLoss(auctionId), HttpStatus.OK);
 	}
 }

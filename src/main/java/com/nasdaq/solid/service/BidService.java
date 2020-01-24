@@ -36,7 +36,7 @@ public class BidService {
 		return bidWinner;
 	}
 	
-	private Bids getBidWinner(int auctionId) {
+	protected Bids getBidWinner(int auctionId) {
 		
 		List<Bids> bidsList = bidsRepo.findByAuctionId(auctionId);
 		

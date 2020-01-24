@@ -134,12 +134,19 @@ public class SolidController {
 	
 	@PutMapping("/auction/{auctionId}")
 	public ResponseEntity<Bids> closeAuction(@PathVariable int auctionId) {
-		
+		Auction auction = auctionRepo.findById(auctionId).orElse(null);
+		if (auction == null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(bidService.closeAuction(auctionId), HttpStatus.OK);
 	}
 	
 	@GetMapping("/profitLoss/{auctionId}")
 	public ResponseEntity<Double> profitLoss(@PathVariable int auctionId) {
+		Auction auction = auctionRepo.findById(auctionId).orElse(null);
+		if (auction == null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(bidService.getProfitOrLoss(auctionId), HttpStatus.OK);
 	}
 }
